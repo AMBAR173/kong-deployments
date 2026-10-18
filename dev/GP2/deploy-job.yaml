@@ -1,22 +1,21 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: gp2-deploy
+  name: gp2-connectivity-test
 spec:
   template:
     spec:
       restartPolicy: Never
 
       containers:
-      - name: deck
+      - name: test
 
-        image: kong/deck:latest
+        image: curlimages/curl
 
         command:
-          - sh
-          - -c
-          - |
-            echo "Testing connectivity"
+        - sh
+        - -c
+        - |
+          echo "Testing Kong CP"
 
-            deck gateway ping \
-              --kong-addr http://kong-cp-kong-admin.kong-cp.svc.cluster.local:8001
+          curl http://kong-cp-kong-admin.kong-cp.svc.cluster.local:8001
