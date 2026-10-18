@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gp2-deploy
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+      - name: deck
+
+        image: kong/deck:latest
+
+        command:
+          - sh
+          - -c
+          - |
+            echo "Testing connectivity"
+
+            deck gateway ping \
+              --kong-addr http://kong-cp-kong-admin.kong-cp.svc.cluster.local:8001
