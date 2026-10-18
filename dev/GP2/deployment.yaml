@@ -21,7 +21,7 @@ spec:
           echo "Downloading OpenAPI Spec"
 
           curl -v \
-          http://192.168.1.8:8081/repository/kong_config_releases/GP2/specification/gp2_1.0.0.yaml
+          http://192.168.1.7:8081/repository/kong_config_releases/GP2/specification/gp2_1.0.0.yaml
 
           echo ""
           echo "Download Complete"
