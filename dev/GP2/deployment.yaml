@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gp2-artifact-download
+  namespace: kong-deployments
+
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+      - name: downloader
+
+        image: curlimages/curl
+
+        command:
+        - sh
+        - -c
+        - |
+          echo "Downloading OpenAPI Spec"
+
+          curl -v \
+          http://192.168.1.8:8081/repository/kong_config_releases/GP2/specification/gp2_1.0.0.yaml
+
+          echo ""
+          echo "Download Complete"
