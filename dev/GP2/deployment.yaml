@@ -1,16 +1,22 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: gp2-artifact-download-gateway-spec
+  name: gp2-deploy-kong
   namespace: kong-deployments
 
 spec:
+  backoffLimit: 0
+
   template:
     spec:
       restartPolicy: Never
 
-      containers:
-      - name: downloader
+      volumes:
+      - name: kong-config
+        emptyDir: {}
+
+      initContainers:
+      - name: download-config
 
         image: curlimages/curl
 
@@ -18,10 +24,39 @@ spec:
         - sh
         - -c
         - |
-          echo "Downloading OpenAPI Spec"
+          set -e
 
-          curl -v \
-          http://192.168.1.7:8081/repository/kong_config_releases/GP2/gateway-config/gp2_1.0.0.yaml
+          echo "Downloading gateway configuration"
 
-          echo ""
-          echo "Download Completee"
+          curl -s \
+            -o /shared/kong.yaml \
+            http://192.168.1.7:8081/repository/kong_config_releases/GP2/gateway-config/gp2_1.0.0.yaml
+
+          echo "Downloaded file"
+
+          ls -l /shared
+
+          cat /shared/kong.yaml
+
+        volumeMounts:
+        - name: kong-config
+          mountPath: /shared
+
+      containers:
+      - name: deck
+
+        image: kong/deck:latest
+
+        command:
+        - deck
+
+        args:
+        - gateway
+        - sync
+        - --kong-addr
+        - http://kong-cp-kong-admin.kong-cp.svc.cluster.local:8001
+        - /shared/kong.yaml
+
+        volumeMounts:
+        - name: kong-config
+          mountPath: /shared
