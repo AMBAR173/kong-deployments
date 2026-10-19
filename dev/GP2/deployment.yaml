@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: gp2-artifact-download
+  name: gp2-artifact-download-gateway-spec
   namespace: kong-deployments
 
 spec:
