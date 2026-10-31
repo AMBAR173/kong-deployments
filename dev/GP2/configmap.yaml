@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gp2-release
+  namespace: kong-deployments
+
+data:
+  version: "1.1.2"
+  artifact: "gp2_1.1.2.yaml"
