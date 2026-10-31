@@ -3,6 +3,8 @@ kind: Job
 metadata:
   name: gp2-deploy-kong
   namespace: kong-deployments
+  annotations: argocd.argoproj.io/hook: PostSync
+               argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 
 spec:
   backoffLimit: 0
@@ -19,6 +21,12 @@ spec:
       - name: download-config
 
         image: curlimages/curl
+        env:
+        - name: ARTIFACT_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: gp2-release
+              key: artifact
 
         command:
         - sh
@@ -30,7 +38,7 @@ spec:
 
           curl -s \
             -o /shared/kong.yaml \
-            http://192.168.1.7:8081/repository/kong_config_releases/GP2/gateway-config/gp2_1.0.0.yaml
+            "http://192.168.1.7:8081/repository/kong_config_releases/GP2/gateway-config/{ARTIFACT_FILE}"
 
           echo "Downloaded file"
 
