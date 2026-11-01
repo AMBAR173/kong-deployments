@@ -40,7 +40,7 @@ spec:
 
           curl -s \
             -o /shared/kong.yaml \
-            "http://192.168.1.7:8081/repository/kong_config_releases/GP2/gateway-config/{ARTIFACT_FILE}"
+            "http://192.168.1.7:8081/repository/kong_config_releases/GP2/gateway-config/${ARTIFACT_FILE}"
 
           echo "Downloaded file"
 
