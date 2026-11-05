@@ -4,5 +4,5 @@ metadata:
   name: gp2-release
   namespace: kong-deployments
 data:
-  version: "1.1.6"
-  artifact: "gp2_1.1.6.yaml"
+  version: "1.1.7"
+  artifact: "gp2_1.1.7.yaml"
